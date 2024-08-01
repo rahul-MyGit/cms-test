@@ -12,3 +12,52 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Instructor {
+  id             Int            @id() @default(autoincrement())
+  name           String
+  email          String         @unique
+  bio            String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model Course {
+  id              Int            @id @default(autoincrement())
+  name            String
+  description     String
+  maxSeats        Int
+  startDate       DateTime
+  endDate         DateTime
+  price           Decimal
+  status          String         @default("draft")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt 
+
+}
+
+model Lead {
+  id              Int            @id @default(autoincrement())
+  name            String
+  email           String         @unique
+  phone           String?
+  courseId        Int
+  linkedinProfile String?
+  status          Status         @default(Pending)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+}
+
+model Comment {
+  id             Int            @id @default(autoincrement())
+  content        String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+enum Status {
+  ACCEPT
+  REJECT
+  Pending
+}
