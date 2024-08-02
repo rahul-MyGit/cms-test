@@ -88,6 +88,8 @@ const addRemark = async (req, res) => {
         const {instructorId, content} = req.body;
         const remark = await prisma.comment.create({
             data: {
+                leadId,
+                instructorId,
                 content
             }
         });
