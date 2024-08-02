@@ -18,6 +18,8 @@ model Instructor {
   name           String
   email          String         @unique
   bio            String?
+  courses        Course[]
+  comments       Comment[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 }
@@ -31,6 +33,9 @@ model Course {
   endDate         DateTime
   price           Decimal
   status          String         @default("draft")
+  instructorId    Int
+  instructor      Instructor    @relation(fields: [instructorId] , references: [id])
+  leads           Lead[]
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt 
 
@@ -41,9 +46,11 @@ model Lead {
   name            String
   email           String         @unique
   phone           String?
-  courseId        Int
   linkedinProfile String?
   status          Status         @default(PENDING)
+  courseId        Int
+  course          Course         @relation(fields: [courseId], references: [id])
+  comments        Comment[]
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
 
@@ -52,6 +59,10 @@ model Lead {
 model Comment {
   id             Int            @id @default(autoincrement())
   content        String
+  leadId         Int
+  lead           Lead           @relation(fields: [leadId], references: [id])
+  instructorId   Int
+  instructor     Instructor     @relation(fields: [instructorId], references: [id])
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 }

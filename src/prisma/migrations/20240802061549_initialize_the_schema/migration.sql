@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('ACCEPT', 'REJECT', 'Pending');
+CREATE TYPE "Status" AS ENUM ('ACCEPT', 'REJECT', 'PENDING');
 
 -- CreateTable
 CREATE TABLE "Instructor" (
@@ -23,6 +23,7 @@ CREATE TABLE "Course" (
     "endDate" TIMESTAMP(3) NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'draft',
+    "instructorId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -35,9 +36,9 @@ CREATE TABLE "Lead" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "phone" TEXT,
-    "courseId" INTEGER NOT NULL,
     "linkedinProfile" TEXT,
-    "status" "Status" NOT NULL DEFAULT 'Pending',
+    "status" "Status" NOT NULL DEFAULT 'PENDING',
+    "courseId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -48,6 +49,8 @@ CREATE TABLE "Lead" (
 CREATE TABLE "Comment" (
     "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
+    "leadId" INTEGER NOT NULL,
+    "instructorId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -59,3 +62,15 @@ CREATE UNIQUE INDEX "Instructor_email_key" ON "Instructor"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Lead_email_key" ON "Lead"("email");
+
+-- AddForeignKey
+ALTER TABLE "Course" ADD CONSTRAINT "Course_instructorId_fkey" FOREIGN KEY ("instructorId") REFERENCES "Instructor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Lead" ADD CONSTRAINT "Lead_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_leadId_fkey" FOREIGN KEY ("leadId") REFERENCES "Lead"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_instructorId_fkey" FOREIGN KEY ("instructorId") REFERENCES "Instructor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
