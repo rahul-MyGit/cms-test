@@ -21,6 +21,54 @@ const searchLeads = async (req,res) => {
     }
 }
 
+const updateLead = async (req,res) => {
+    try {
+        const { leadId} = req.params;
+        const { status } = req.body;
+        const updatedLead = await prisma.lead.update({
+            where: {
+                id: parseInt(leadId)
+            },
+            data: {
+                status
+            }
+        });
+
+        res.json({
+            message: "Lead Status Updated successfully",
+            lead: updatedLead
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: "Error updating status for lead"
+        });
+    }
+}
+
+const addRemark = async (req, res) => {
+    try {
+        const {leadId} = req.params;
+        const {instructorId, content} = req.body;
+        const remark = await prisma.comment.create({
+            data: {
+                content
+            }
+        });
+
+        res.status(201).json({
+            message: "Remark added successfully",
+            remark
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: "Error adding remarks"
+        });
+    }
+}
+
+
 module.exports = {
-    searchLeads
+    searchLeads,
+    updateLead,
+    addRemark
 }
