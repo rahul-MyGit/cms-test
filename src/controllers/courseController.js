@@ -1,4 +1,4 @@
-const { PrismaClient}  = require("@prisma/client");
+const { PrismaClient, Prisma}  = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const createCourse = async (req, res) => {
@@ -6,14 +6,14 @@ const createCourse = async (req, res) => {
         const {instructorId, name, description, maxSeats, startDate, endDate, price} = req.body;
         const course = await prisma.course.create({
             data: {
-                instructorId,
+                instructorId: parseInt(instructorId),
                 name,
                 description,
-                maxSeats,
-                leftSeats: maxSeats,
-                startDate,
-                endDate,
-                price,
+                maxSeats : parseInt(maxSeats),
+                leftSeats: parseInt(maxSeats),
+                startDate: new Date(startDate),
+                endDate: new Date(endDate),
+                price: new Prisma.Decimal(parseFloat(price)),
             }
         });
         res.status(201).json({
@@ -21,6 +21,7 @@ const createCourse = async (req, res) => {
             course
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             error: "Error while creating the course"
         });
@@ -43,13 +44,13 @@ const updateCourse = async (req,res) => {
                 message: "COurse not found"
             })
         }
-        if(course.maxSeats > maxSeats) {
+        if(course.maxSeats > parseInt(maxSeats)) {
             return res.status(400).json({
                 message: "Cannot decrease max seats"
             });
         }
 
-        const updatedSeats = (maxSeats - course.maxSeats); 
+        const updatedSeats = (parseInt(maxSeats) - course.maxSeats); 
 
         const updatedCourse = await prisma.course.update({
             where: {
@@ -57,13 +58,13 @@ const updateCourse = async (req,res) => {
             },
             data: {
                 name,
-                maxSeats,
+                maxSeats : parseInt(maxSeats),
                 leftSeats: {
                     increment: updatedSeats
                 },
-                startDate,
-                endDate,
-                price,
+                startDate: new Date(startDate),
+                endDate : new Date(endDate),
+                price : new Prisma.Decimal(parseFloat(price)),
                 status
             }
         });
@@ -72,6 +73,7 @@ const updateCourse = async (req,res) => {
             course: updatedCourse
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             error: "Error updating course"
         });

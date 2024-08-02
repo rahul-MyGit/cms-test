@@ -88,17 +88,20 @@ const addRemark = async (req, res) => {
         const {instructorId, content} = req.body;
         const remark = await prisma.comment.create({
             data: {
-                leadId,
-                instructorId,
+                leadId: parseInt(leadId),
+                instructorId : parseInt(instructorId),
                 content
             }
         });
+
+        console.log(remark);
 
         res.status(201).json({
             message: "Remark added successfully",
             remark
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             error: "Error adding remarks"
         });
