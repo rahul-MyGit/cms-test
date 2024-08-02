@@ -29,6 +29,7 @@ model Course {
   name            String
   description     String
   maxSeats        Int
+  leftSeats       Int
   startDate       DateTime
   endDate         DateTime
   price           Decimal

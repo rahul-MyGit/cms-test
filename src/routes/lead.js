@@ -1,8 +1,8 @@
 const express = require("express");
-const { searchLeads, updateLead, addRemark } = require("../controllers/leadController");
+const { allLeads, updateLead, addRemark } = require("../controllers/leadController");
 const router = express.Router();
 
-router.get("/" , searchLeads);
+router.get("/" , allLeads);
 router.put("/:leadId", updateLead);
 router.post("/:leadId/comments", addRemark)
 

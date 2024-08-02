@@ -10,12 +10,13 @@ const createCourse = async (req, res) => {
                 name,
                 description,
                 maxSeats,
+                leftSeats: maxSeats,
                 startDate,
                 endDate,
                 price,
             }
         });
-        res.status(200).json({
+        res.status(201).json({
             message: "Course created successfully",
             course
         });
@@ -30,6 +31,26 @@ const updateCourse = async (req,res) => {
     try {
         const { courseId } = req.params;
         const {name, maxSeats, startDate, endDate, price, status} = req.body;
+
+        const course = await prisma.course.findUnique({
+            where: {
+                id: parseInt(courseId)
+            }
+        })
+
+        if (!course) {
+            return res.status(404).json({
+                message: "COurse not found"
+            })
+        }
+        if(course.maxSeats > maxSeats) {
+            return res.status(400).json({
+                message: "Cannot decrease max seats"
+            });
+        }
+
+        const updatedSeats = (maxSeats - course.maxSeats); 
+
         const updatedCourse = await prisma.course.update({
             where: {
                 id: parseInt(courseId)
@@ -37,6 +58,9 @@ const updateCourse = async (req,res) => {
             data: {
                 name,
                 maxSeats,
+                leftSeats: {
+                    increment: updatedSeats
+                },
                 startDate,
                 endDate,
                 price,
