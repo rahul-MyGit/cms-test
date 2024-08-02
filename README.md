@@ -4,6 +4,7 @@
 It's a basic cms application in Node.js and postgres.
 
 ## Diagram
+![Screenshot 2024-08-02 201454](https://github.com/user-attachments/assets/afde4f60-3287-4f54-8d65-bad1235c7a9c)
 
 ## Installation
 
@@ -14,12 +15,15 @@ It's a basic cms application in Node.js and postgres.
 ```
 
 - Start project without docker
-
+- 
+  - Create a top level .env file and add:
 ```bash
-- create a top level .env file and add:
+
 DATABASE_URL="your_databse_url"
 PORT=3000
 ```
+-
+  - Then in terminal run below cmd:
 ```bash
 npm i
 npm run prisma:generate
