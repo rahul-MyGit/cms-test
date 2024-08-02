@@ -61,7 +61,7 @@ async function main(){
             name: "Full stack web dev in NEXT",
             description: "hero to god in NEXT",
             maxSeats: 15,
-            leftSeats: 15,
+            leftSeats: 14,
             startDate: new Date('2024-12-15'),
             endDate: new Date('2024-7-2'),
             price: 99.99
