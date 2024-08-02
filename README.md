@@ -40,8 +40,3 @@ npm run prisma:migrate
 npm run seed
 npm start
 ```
-
-### Application will run on :
-```bash
-http://localhost:3000/
-```
