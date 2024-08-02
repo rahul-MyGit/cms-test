@@ -54,7 +54,32 @@ const updateCourse = async (req,res) => {
     }
 }
 
+const registerUser = async ( req, res) => {
+    try {
+        const { courseId} = req.params;
+        const {name, email, phone, linkedinProfile} = req.body;
+        const lead = await prisma.lead.create({
+            data: {
+                courseId: parseInt(courseId),
+                name,
+                email,
+                phone,
+                linkedinProfile,
+            },
+        });
+        res.status(201).json({
+            message: "Application submitted successfully",
+            lead
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: "Error submitting the application"
+        });
+    }
+}
+
 module.exports = {
     createCourse,
-    updateCourse
+    updateCourse,
+    registerUser,
 }
