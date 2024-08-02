@@ -5,9 +5,10 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
-    "seed": "node src/prisma/seed.js",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate deploy",
+    "seed": "node prisma/seed.js",
+    "prisma:studio": "npx prisma studio --port 5555",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,7 +17,9 @@
   "dependencies": {
     "@prisma/client": "^5.17.0",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
     "prisma": "^5.17.0"
   }
 }
